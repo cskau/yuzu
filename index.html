@@ -24,6 +24,48 @@
     <script src="codemirror/addon/fold/xml-fold.js"></script>
 
     <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .table-div,
+      .row-div,
+      .cell-div {
+        margin: 0;
+        padding: 0;
+        vertical-align: top;
+        width: auto;
+        border: 0;
+      }
+
+      .row-div {
+        max-width: 100%;
+        width: 100%;
+        overflow-y: scroll;
+      }
+      .cell-div {
+        /*max-width: 50%;*/
+        max-height: 50%;
+        width: 50%;
+        /*display: inline-block;*/
+        float:left;
+        box-sizing: border-box;
+      }
+
+      #main_table {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      #controls-row {
+        height: 10em;
+      }
+
       #log p,
       #output,
       #chat_output {
@@ -54,16 +96,8 @@
         width: 90%;
       }
 
-      #main_table {
-        width: 100%;
-      }
-
-      #main_table td {
-        width: 50%;
-      }
-
       #output {
-        height: 20em;
+        height: 18em;
         overflow-y: scroll;
         overflow-x: scroll;
         width: 80ex;
@@ -84,28 +118,32 @@
       }
 
       #controls {
-        text-align: right;
+        text-align: left;
         padding: 1ex;
       }
 
 
       .Codemirror {
-        border: 1px solid #ddd;
         border-radius: 4px;
-        height: auto;
         line-height: 1.5em;
         font-family: monospace;
+        /* auto resize */
+        border: 1px solid #ddd;
+        height: auto;
+        /*height: 100%;*/
+      }
+      /* auto resize */
+      .CodeMirror-scroll {
+        height: auto;
+        /*height: 100%;*/
+        overflow-y: hidden;
+        overflow-x: auto;
       }
 
       .success { background-color: #dff0d8 !important; }
       .info { background-color: #d9edf7 !important; }
       .warning { background-color: #fcf8e3 !important; }
       .error { background-color: #f2dede !important; }
-
-      table td,
-      table td > * {
-        vertical-align: top;
-      }
 
 
       .chatBubble {
@@ -368,6 +406,8 @@
           tabSize: 4,
           lineNumbers: true,
           lineWrapping: true,
+          // Auto resize:
+          viewportMargin: Infinity,
           // Code folding.
           foldGutter: {
             rangeFinder: new CodeMirror.fold.combine(
@@ -384,6 +424,8 @@
         };
 
         codeMirror = CodeMirror.fromTextArea(codeElement, config);
+
+        // codeMirror.setSize('auto', 'auto');
 
         var linesToFold = JSON.parse(
             codeElement.getAttribute('data-lines-to-fold'));
@@ -413,7 +455,7 @@
           // hlLine = editor.setLineClass(editor.getCursor().line, null, "activeline");
           var line = cm.getCursor(true).line; // zero indexed
           var info = cm.lineInfo(line);
-          console.log(info);
+          // console.log(info);
         });
 
         // codeMirror.foldCode(CodeMirror.Pos(8, 0));
@@ -471,17 +513,11 @@
   </head>
 
   <body>
-
-    <h3>
-      <i class="material-icons">question_answer</i>
-      Let's Chat
-    </h3>
-
-    <table id="main_table">
-      <tr>
-        <td>
-          <form>
-            <textarea id="code" data-lines-to-fold="[
+    <div id="main_table" class="table-div">
+      <div class="row-div">
+        <div class="cell-div">
+          
+          <textarea id="code" data-lines-to-fold="[
 10, 35, 46, 63, 77, 82, 87, 91, 95, 99, 104, 108, 112
 ]">
 # Load a library that allows us to "open" an URL (web address).
@@ -599,7 +635,42 @@ def addToChat(object):
 def clearChat():
   chat.clearChat()
 </textarea>
+        </div>
 
+        <div class="cell-div">
+          <form>
+            <div id="chat_output"></div>
+
+            <div>
+              <textarea id="chat_input"></textarea>
+              <button id="send_button" type="button">
+                <i class="material-icons large">chat</i>
+              </button>
+            </div>
+          </form>
+
+          <div id="turtle_canvas"></div>
+        </div>
+      </div>
+
+      <div id="controls-row" class="row-div">
+        <div class="cell-div">
+<!--
+    <h3>
+      <i class="material-icons">question_answer</i>
+      Let's Chat
+    </h3>
+-->
+
+          <!-- Show any Python stdout here. -->
+          <pre id="output" ></pre>
+        </div>
+
+        <div class="cell-div">
+          <!-- Show any Python warnings or errors here. -->
+          <div id="log"></div>
+
+          <form>
             <div id="controls">
               <button id="stop_button" type="button">
                 <i class="material-icons medium">stop</i>
@@ -611,30 +682,9 @@ def clearChat():
               </button>
             </div>
           </form>
-
-          <!-- Show any Python warnings or errors here. -->
-          <div id="log"></div>
-
-          <!-- Show any Python stdout here. -->
-          <pre id="output" ></pre>
-
-          <div id="turtle_canvas"></div>
-        </td>
-
-        <td>
-          <form>
-            <div id="chat_output"></div>
-
-            <div>
-              <textarea id="chat_input"></textarea>
-              <button id="send_button" type="button">
-                <i class="material-icons large">chat</i>
-              </button>
-            </div>
-          </form>
-        </td>
-      </tr>
-    </table>
+        </div>
+      </div>
+    </div>
 
   </body>
 </html>
