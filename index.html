@@ -43,17 +43,19 @@
       }
 
       .row-div {
-        max-width: 100%;
+        /*max-width: 100%;*/
         width: 100%;
-        overflow-y: scroll;
+        overflow-y: auto;
       }
       .cell-div {
         /*max-width: 50%;*/
-        max-height: 50%;
+        /*max-height: 50%;*/
         width: 50%;
+        height: 100%;
         /*display: inline-block;*/
-        float:left;
+        float: left;
         box-sizing: border-box;
+        padding: 1ex;
       }
 
       #main_table {
@@ -62,8 +64,13 @@
         overflow: hidden;
       }
 
+      #input-row {
+        height: 70%;
+        /*max-height: 70%;*/
+      }
+
       #controls-row {
-        height: 10em;
+        height: 30%;
       }
 
       #log p,
@@ -76,7 +83,7 @@
       }
 
       #chat_output {
-        height: 30em;
+        height: 90%;
         overflow-y: scroll;
         /*margin: 1ex;*/
         vertical-align: middle;
@@ -92,15 +99,16 @@
       }
 
       #chat_input {
-        height: 2em;
+        height: 5%;
         width: 90%;
       }
 
       #output {
-        height: 18em;
+        height: 90%;
         overflow-y: scroll;
         overflow-x: scroll;
-        width: 80ex;
+        /*width: 80ex;*/
+        width: 90%;
         float: right;
       }
 
@@ -115,6 +123,8 @@
       #send_button {
         color: #438AFB;
         width: 9%;
+        height: 5%;
+        vertical-align: top;
       }
 
       #controls {
@@ -134,7 +144,7 @@
       }
       /* auto resize */
       .CodeMirror-scroll {
-        height: auto;
+        /*height: auto;*/
         /*height: 100%;*/
         overflow-y: hidden;
         overflow-x: auto;
@@ -514,7 +524,7 @@
 
   <body>
     <div id="main_table" class="table-div">
-      <div class="row-div">
+      <div id="input-row" class="row-div">
         <div class="cell-div">
           
           <textarea id="code" data-lines-to-fold="[
@@ -638,16 +648,14 @@ def clearChat():
         </div>
 
         <div class="cell-div">
-          <form>
-            <div id="chat_output"></div>
+          <div id="chat_output"></div>
 
-            <div>
-              <textarea id="chat_input"></textarea>
-              <button id="send_button" type="button">
-                <i class="material-icons large">chat</i>
-              </button>
-            </div>
-          </form>
+          <div>
+            <textarea id="chat_input"></textarea>
+            <button id="send_button" type="button">
+              <i class="material-icons large">chat</i>
+            </button>
+          </div>
 
           <div id="turtle_canvas"></div>
         </div>
@@ -667,9 +675,6 @@ def clearChat():
         </div>
 
         <div class="cell-div">
-          <!-- Show any Python warnings or errors here. -->
-          <div id="log"></div>
-
           <form>
             <div id="controls">
               <button id="stop_button" type="button">
@@ -682,6 +687,9 @@ def clearChat():
               </button>
             </div>
           </form>
+
+          <!-- Show any Python warnings or errors here. -->
+          <div id="log"></div>
         </div>
       </div>
     </div>
