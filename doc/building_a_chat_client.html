@@ -387,7 +387,43 @@ def onMessageSend(message):
       </p>
 
       <p>
-        Next let's quickly add that to the receiving function as well so we
+        But echoing our message back to ourselves is not that useful either.
+        The whole point is to share our message with everyone else.
+      </p>
+
+      <textarea class="code">
+# Send a new message to the server.
+def sendMessageToServer(message):
+  ...</textarea>
+
+      <p>
+        So let's also, or perhaps instead, apply
+        <code>sendMessageToServer(message)</code> inside
+        <code>onMessageSend(message)</code>:
+      </p>
+
+      <textarea class="code" data-highlight-lines="[2]">
+def onMessageSend(message):
+  print 'Send: ' + message
+  sendMessageToServer(message) # +++ Add this line</textarea>
+
+      <p>
+        Pressing the send button now will send your typed in message to the
+        server for everyone to see. Give it a try.
+      </p>
+
+      <p>
+        But what good is sending messages if we can't receive any and see other
+        people's responces? Next let's work on the receiving mechanism.
+      </p>
+    </div>
+
+
+    <div class="A4">
+      <p>
+        For starters let's add that
+        <code>addTextToChat(message)</code>
+        to the receiving function as well so we
         might see any incoming messages:
       </p>
 
@@ -412,8 +448,11 @@ def receiveAllMessages():
     onMessageReceive(message, sender)</textarea>
 
       <p>
-        So while receiveAllMessages() will call onMessageReceive(..), there's
-        still nothing calling the former in the first place.
+        So while
+        <code>receiveAllMessages()</code>
+        will call
+        <code>onMessageReceive(..)</code>
+        , there's still nothing calling the former in the first place.
         But we already know a handy place to so do:
       </p>
 
@@ -430,6 +469,40 @@ def onTimerTick():
 Tick!
 Received: hi!</pre>
 
+      <fieldset class="notice">
+        <legend>Note</legend>
+          <p>
+            So why does this work? Let's try deconstruct it into steps:
+          </p>
+
+          <p>
+            First,
+            <code>onTimerTick()</code> is called once every second, which will call
+            <code>receiveAllMessages()</code>.
+            (Meaning the latter is called once every second.)
+          </p>
+
+          <p>
+            Inside
+            <code>receiveAllMessages()</code>
+            we fetch all messages from the server once.
+            And then once for every such message, we call
+            <code>onMessageReceive(message, sender)</code>.
+          </p>
+
+          <p>
+            Inside
+            <code>onMessageReceive(message, sender)</code>
+            we can then call
+            <code>addTextToChat(message)</code>
+            or whichever functions we choose.
+            (Meaning they will be called once for every message, once every second.)
+          </p>
+
+          <p>
+            Not too complicated, right? :)
+          </p>
+        </fieldset>
     </div>
 
 
@@ -439,8 +512,13 @@ Received: hi!</pre>
       <h3>Chat apps can't be complete without stickers.</h3>
 
       <p>
-        We can add emoji and pictures as well.
-        For example, when the user type ':jackolantern:' into the chat, we'll show the picture of jack-o'-lantern, using the addImageToChat(..) function.
+        So we've already added text message,
+        but we can add pictures and emoji as well.
+        For example, when the user types ':jackolantern:' into the chat,
+        we could show a picture of jack-o'-lantern.
+        To do so try use the
+        <code>addImageToChat(..)</code>
+        function:
       </p>
 
       <textarea class="code" data-highlight-lines="[2, 3, 4]">
@@ -465,14 +543,53 @@ def onMessageReceive(message, sender):
 
       <p>
         Ok, perhaps something a bit more useful would be to add smileys.
-        Luckily, as it turns out, that is as straight forward as adding stamps:
+        Luckily, as it turns out, that is also quite easy:
+      </p>
+
+      <textarea class="code" data-highlight-lines="[1, 2]">
+def onMessageReceive(message, sender):
+  if message == ':)':
+    addTextToChat(SMILEY_MAP[':)'])
+  ..</textarea>
+
+      <p>
+        The weirdest thing about this code is clearly the
+        <code>SMILEY_MAP[':)']</code>, so let's have a look at that:
+      </p>
+
+      <textarea class="code" data-highlight-lines="">
+# A 'map' that tells for "☺️" when we give it ":)".
+SMILEY_MAP = {
+  ':)': u'☺️',
+  ...
+}</textarea>
+
+      <p>
+        So as it says it's a kind of map, or 'dictionary', translating one thing
+        into something else.
+        From the value on the left to the value on the right:
+        <code>:)</code> becomes <code>☺️</code>.
+      </p>
+
+      <p>
+        But there is one big short coming of this approach.
+        What if I were to write:
+        "<code>This is really cool! :)</code>"?
+      </p>
+
+      <p>
+        In fact to handle this kind of smiley inside other text we have to do
+        something completely different:
       </p>
 
       <textarea class="code" data-highlight-lines="[1]">
 def onMessageReceive(message, sender):
   message = message.replace(':)', SMILEY_MAP[':)'])
   ..</textarea>
+    </div>
 
+
+    <div class="A4">
       <p>
         Now here's something we haven't seen so far: a 'method',
         <code>.replace(..)</code>, that isn't defined anywhere in our code.
@@ -495,10 +612,7 @@ def onMessageReceive(message, sender):
         Luckily you won't really need to for this project,
         but it's still nice to know where to look if you ever need to.
       </p>
-    </div>
 
-
-    <div class="A4">
       <p>
         What the documentation is telling us is simply that we can call
         <code>s.replace(old, new)</code>
@@ -537,7 +651,10 @@ print myOtherString</textarea>
           Hint: The original string contains more than one 'a'.
         </p>
       </fieldset>
+    </div>
 
+
+    <div class="A4">
       <p>
         There are however many more smileys so we could start adding more
         replace statements:
@@ -570,13 +687,26 @@ def onMessageReceive(message, sender):
       </p>
 
       <p>
-        Now we just have to fill in the SMILEY_MAP. :)
+        Now we just have to fill in the
+        <code>SMILEY_MAP</code>:
+      </p>
+
+      <textarea class="code" data-highlight-lines="[3]">
+# A 'map' that tells for "☺️" when we give it ":)".
+SMILEY_MAP = {
+  ':)': u'☺️',
+  ':D': u'😀',
+  ...
+}</textarea>
+
+      <p>
+        :D
       </p>
     </div>
 
 
     <div class="A4">
-      <h3>Who sent that message?</h3>
+      <h2>Who sent that message?</h2>
 
       <p>
         Even with all the smileys and awesome stamps, the chat is still
@@ -607,6 +737,10 @@ def onMessageReceive(message, sender):
         "192.168.34.175, says:" in front of it.
       </p>
 
+      <p>
+        We'll see later how we can make it a little easier to tell at a glance.
+      </p>
+
       <fieldset class="notice">
         <legend>Note</legend>
         <p>
@@ -616,7 +750,7 @@ def onMessageReceive(message, sender):
 
         <p>
           Turns out, proving exactly who sent what, so called <i>authentication</i>
-          (in "cryptography"), is a much bigger subject we can't fully cover here.
+          (in 'cryptography'), is a much bigger subject we can't fully cover here.
         </p>
       </fieldset>
 
