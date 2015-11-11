@@ -793,7 +793,7 @@ def createText(text)
 def createImage(imageURL)
 def createChatBubble(contents)
 def createIdenticon(identity, size='32')
-def createGroup(contents)
+def createGroup(*contents)
 def addToChat(object)
 def clearChat()</textarea>
 
@@ -808,9 +808,9 @@ def onMessageReceive(message, sender):
   for smiley in SMILEY_MAP:
     message = message.replace(smiley, SMILEY_MAP[smiley])
   addToChat(
-      createGroup([
+      createGroup(
           createText(sender),
-          createChatBubble(createText(message))]))</textarea>
+          createChatBubble(createText(message))))</textarea>
 
       <p>
         To make it a little easier to recognise who's writing, we can also add
@@ -822,10 +822,10 @@ def onMessageReceive(message, sender):
   for smiley in SMILEY_MAP:
     message = message.replace(smiley, SMILEY_MAP[smiley])
   addToChat(
-      createGroup([
+      createGroup(
           createIdenticon(sender),
           createText(sender),
-          createChatBubble(createText(message))]))</textarea>
+          createChatBubble(createText(message))))</textarea>
 
       <p>
         A cool feature of these images is that they are completely random,
@@ -868,10 +868,10 @@ Received: Hi!
           There are many possible ways to achieve this. You can:
         </p>
         <p>
-          1. Clear the chat screen every times you receive new messages.
+          1. Clear the chat screen every time you receive new messages.
         </p>
         <p>
-          2. Keep the latest messages and show only new messages.
+          2. Keep track of the latest messages and show only new messages.
         </p>
       </fieldset>
 

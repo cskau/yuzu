@@ -633,8 +633,9 @@ def createIdenticon(identity, size='32'):
   return chat.createImage('http://identicon.org?s=' + size + '&amp;t=' + identity)
 
 # Creates a "group object", which holds one or several other objects, and can be added to the chat later.
-# The argument 'contents' can either be a single object or a list of objects.
-def createGroup(contents):
+# The argument 'contents' can either be a single object or multiple objects. (That's what the * means.)
+# Example: createGroup(createText('Hello, '), createText('World!'))
+def createGroup(*contents):
   return chat.createGroup(contents)
 
 # Adds 'object' to the chat window - for instance a text object or a chat bubble object.
