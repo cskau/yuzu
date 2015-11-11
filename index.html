@@ -547,17 +547,17 @@ SMILEY_MAP = {
 }
 
 
-# This method should be called (run) every time we receive a message from the chat server.
+# This function should be called (run) every time we receive a message from the chat server.
 def onMessageReceive(message, sender):
   print 'Received: ' + message
 
 
-# This method will be called every time we press the 'send' button.
+# This function will be called every time we press the 'send' button.
 def onMessageSend(message):
   print 'Send: ' + message
 
 
-# This method is called every 1 second.
+# This function is called every 1 second.
 def onTimerTick():
   print 'Tick!'
 

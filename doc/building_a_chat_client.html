@@ -254,7 +254,7 @@ print 'Hello world!'</textarea>
 
         <p>
           You will notice the code is automatically run as you type,
-          and you will like see several error messages pop-up.
+          and you will likely see several error messages pop-up.
           Don't worry though it is just telling you you're not done typing yet.
         </p>
 
@@ -304,15 +304,15 @@ print 'Hello world!'</textarea>
       </p>
 
       <textarea class="code">
-# This method should be "called" (run) every time we receive a message from the chat server.
+# This function should be "called" (run) every time we receive a message from the chat server.
 def onMessageReceive(message):
   print 'Received: ' + message
 
-# This method will be called every time we press the 'send' button.
+# This function will be called every time we press the 'send' button.
 def onMessageSend(message):
   print 'Send: ' + message
 
-# This method is called every 1 second.
+# This function is called every 1 second.
 def onTimerTick():
   print 'Tick!'</textarea>
 
@@ -387,7 +387,7 @@ def onMessageSend(message):
       </p>
 
       <p>
-        But echoing our message back to ourselves is not that useful either.
+        But echoing our message back to ourselves is not that useful in itself.
         The whole point is to share our message with everyone else.
       </p>
 
@@ -414,7 +414,7 @@ def onMessageSend(message):
 
       <p>
         But what good is sending messages if we can't receive any and see other
-        people's responces? Next let's work on the receiving mechanism.
+        people's responses? Next let's work on the receiving mechanism.
       </p>
     </div>
 
@@ -433,7 +433,7 @@ def onMessageReceive(message, sender):
   addTextToChat(message) # +++ Add this line</textarea>
 
       <p>
-        If we try run that, that will not however do anything much.
+        If we try run it, that will not however do anything much.
         To find out why we need to look at one of the other functions.
       </p>
 
@@ -512,7 +512,7 @@ Received: hi!</pre>
       <h3>Chat apps can't be complete without stickers.</h3>
 
       <p>
-        So we've already added text message,
+        So we've already added text messages,
         but we can add pictures and emoji as well.
         For example, when the user types ':jackolantern:' into the chat,
         we could show a picture of jack-o'-lantern.
@@ -709,7 +709,7 @@ SMILEY_MAP = {
       <h2>Who sent that message?</h2>
 
       <p>
-        Even with all the smileys and awesome stamps, the chat is still
+        Even with all the smileys and awesome stickers, the chat is still
         not too useful, if we can't keep track of who's saying what.
       </p>
 
@@ -721,7 +721,9 @@ SMILEY_MAP = {
       </p>
 
       <p>
-        Look closely at the onMessageReceive(..) function and you'll see that
+        Look closely at the
+        <code>onMessageReceive(..)</code>
+        function and you'll see that
         we're also given a 'sender' argument, which contains this information.
         The code below shows how to display that 'sender' information in the chat box:
       </p>
@@ -783,7 +785,7 @@ def addTextToChat(text):
       createText(text))</textarea>
 
       <p>
-        So maybe instead of using this simply 'wrapper' we can start using the
+        So maybe instead of using this simple 'wrapper' we can start using the
         underlying functions and decide for ourselves what it's going to look like.
         We have the following functions to play with:
       </p>
@@ -855,7 +857,9 @@ Received: Hi!
 ...</pre>
 
       <p>
-        This is because every time receiveAllMessages() ask messages
+        This is because every time
+        <code>receiveAllMessages()</code>
+        asks for messages
         the server returns the last 20 messages it received.
         This means we have to do some more work to avoid showing the same messages
         over and over again.
