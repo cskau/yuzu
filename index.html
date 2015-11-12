@@ -320,7 +320,7 @@
       // Appends some text to a pre element.
       function outputFunction(text) {
         var outputElement = document.getElementById("output");
-        outputElement.innerHTML = outputElement.innerHTML + text;
+        outputElement.appendChild(document.createTextNode(text));
       }
 
 
